@@ -87,7 +87,7 @@ namespace PrimeiraWebAPI.Services
             // select top 1 * from albuns x where x.IdAlbum == id 
             var resultado = listaDeAlbuns.Where(x => x.IdAlbum == id).FirstOrDefault();
             if (resultado == null)
-                return new ServiceResponse<Album>("ID encontrado!");
+                return new ServiceResponse<Album>("ID não encontrado!");
             else
                 return new ServiceResponse<Album>(resultado);
         }
@@ -100,6 +100,32 @@ namespace PrimeiraWebAPI.Services
             else
                 return new ServiceResponse<Album>(resultado);
 
+        }
+
+        public ServiceResponse<Album> Editar(int id, AlbumUpdateRequest model)
+        {
+            // select top 1 * from albuns x where x.IdAlbum == id 
+            var resultado = listaDeAlbuns.Where(x => x.IdAlbum == id).FirstOrDefault();
+
+            if (resultado == null) {
+                return new ServiceResponse<Album>("Album não encontrado!");
+            }
+
+            resultado.Artista = model.Artista;
+            return new ServiceResponse<Album>(resultado);
+        }
+
+        public ServiceResponse<bool> Deletar(int id)
+        {
+            var resultado = listaDeAlbuns.Where(x => x.IdAlbum == id).FirstOrDefault();
+
+            if (resultado == null) {
+                return new ServiceResponse<bool>("Album não encontrado!");
+            }
+
+            listaDeAlbuns.Remove(resultado);
+
+            return new ServiceResponse<bool>(true);
         }
     }
 }
